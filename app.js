@@ -1,4 +1,6 @@
 const $ = (selector) => document.querySelector(selector)
+const $$ = (selector) => document.querySelectorAll(selector)
+
 
 
 // const askForFox =()=>{
@@ -34,19 +36,48 @@ const $ = (selector) => document.querySelector(selector)
 
 // ------------------------
 
-const getApi =()=>{
-    fetch("https://yesno.wtf/api")
-    .then(res => res.json())
-            .then(data => yesOrNo(data))
-            .catch(err => console.log(err)) 
-}        
-const yesOrNo =(data)=>{
- const {image,answer}  = data 
- $("img").src = image
- $("h2").innerHTML = answer
+// const getApi =()=>{
+//     fetch("https://yesno.wtf/api")
+//     .then(res => res.json())
+//             .then(data => yesOrNo(data))
+//             .catch(err => console.log(err)) 
+// }        
+// const yesOrNo =(data)=>{
+//  const {image,answer}  = data 
+//  $("img").src = image
+//  $("h2").innerHTML = answer
 
+// }
+
+// $("#btn").addEventListener("click", ()=>{
+//     getApi()
+// })
+
+
+// fetch("https://foodish-api.herokuapp.com/api")
+//   .then(res => res.json())
+//   .then(data => console.log(data))
+
+const getFood = (foodTag) => {
+    fetch(`https://foodish-api.herokuapp.com/api/images/${foodTag ? foodTag : ""}`)
+    .then(res => res.json())
+    .then(data => getImage(data))
 }
 
-$("#btn").addEventListener("click", ()=>{
-    getApi()
+const getImage =(data)=>{
+    const {image}= data
+    $("#img").src= image
+    
+}
+for (const btn of $$(".btn")){
+     btn.addEventListener("click",() => {
+    if(btn.id=="food"){
+        getFood()
+      }else{
+        getFood(btn.id)
+      }
+    
 })
+}
+
+
